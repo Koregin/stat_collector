@@ -1,0 +1,6 @@
+url=jdbc:mysql://localhost:3306/switches_base
+username=
+password=
+driver-class-name=com.mysql.jdbc.Driver
+switch-password=password
+html-path-file=/path/to/switchCounters.html
