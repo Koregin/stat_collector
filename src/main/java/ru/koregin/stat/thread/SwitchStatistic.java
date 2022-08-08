@@ -30,6 +30,7 @@ public class SwitchStatistic {
     private final static List<String> GOODCOUNTERS = List.of("Bytes", "Frames", "Multicast frames", "Broadcast frames", "Tagged frames");
     private final String htmlPathFile;
     private final String switchPassword;
+    private final static String LS = System.lineSeparator();
 
     public SwitchStatistic() {
         try (InputStream in = SwitchStatistic.class.getClassLoader()
@@ -204,7 +205,14 @@ public class SwitchStatistic {
     public static void createHtml(Map<String, List<List<Map<String, Long>>>> data, String htmlPathFile) {
         StringBuilder sb = new StringBuilder();
         String cssStyle;
-        sb.append(headerFooter("header"));
+
+        sb.append(headerFooter("header")).append("<h2>").append(new Date()).append("</h2>");
+        String notes = "<h3>Примечания:</h3>" + LS
+                + "<ul><li>Оранжевым цветом подсвечиваются счетчики с ошибками </li>" + LS
+                + "<li>Счетчики с нулевыми значениями не отображаются</li>" + LS
+                + "<li>Статистика работает корректно только с коммутаторами Cisco 2950</li>" + LS
+                + "<li>Статистика основана на команде: <b>sh controllers ethernet-controller gi0/1(2)</b></li></ul>";
+        sb.append(notes);
         for (String swName : data.keySet()) {
             for (int i = 0; i < 2; i++) {
                 Map<String, Long> transmit = data.get(swName).get(i).get(0);
@@ -250,40 +258,40 @@ public class SwitchStatistic {
     }
 
     public static String headerFooter(String html) {
-        String header = "<html>\n"
-                + "<head><title>Interface counters</title><style>\n"
-                + "table.statTable {\n"
-                + "  border: 1px solid #1C6EA4;\n"
-                + "  background-color: #EEEEEE;\n"
-                + "  width: 100%;\n"
-                + "  text-align: left;\n"
-                + "  border-collapse: collapse;\n"
-                + "}\n"
-                + "table.statTable td, table.statTable th {\n"
-                + "  border: 1px solid #AAAAAA;\n"
-                + "  padding: 3px 2px;\n"
-                + "}\n"
-                + "table.statTable tbody td {\n"
-                + "  font-size: 13px;\n"
-                + "}\n"
-                + "table.statTable tr:nth-child(even) {\n"
-                + "  background: #D0E4F5;\n"
-                + "}\n"
-                + "table.statTable tfoot td {\n"
-                + "  font-size: 14px;\n"
-                + "}\n"
-                + "table.statTable tfoot .links {\n"
-                + "  text-align: right;\n"
-                + "}\n"
-                + "table.statTable tfoot .links a{\n"
-                + "  display: inline-block;\n"
-                + "  background: #1C6EA4;\n"
-                + "  color: #FFFFFF;\n"
-                + "  padding: 2px 8px;\n"
-                + "  border-radius: 5px;\n"
-                + "}"
-                + ".statusWARN { background-color: #FFBB33; }\n"
-                + ".statusOK { background-color: #D0E4F5; }\n"
+        String header = "<html>" + LS
+                + "<head><title>Interface counters</title><style>" + LS
+                + "table.statTable {" + LS
+                + "  border: 1px solid #1C6EA4;" + LS
+                + "  background-color: #EEEEEE;" + LS
+                + "  width: 100%;" + LS
+                + "  text-align: left;" + LS
+                + "  border-collapse: collapse;" + LS
+                + "}" + LS
+                + "table.statTable td, table.statTable th {" + LS
+                + "  border: 1px solid #AAAAAA;" + LS
+                + "  padding: 3px 2px;" + LS
+                + "}" + LS
+                + "table.statTable tbody td {" + LS
+                + "  font-size: 13px;" + LS
+                + "}" + LS
+                + "table.statTable tr:nth-child(even) {" + LS
+                + "  background: #D0E4F5;" + LS
+                + "}" + LS
+                + "table.statTable tfoot td {" + LS
+                + "  font-size: 14px;" + LS
+                + "}" + LS
+                + "table.statTable tfoot .links {" + LS
+                + "  text-align: right;" + LS
+                + "}" + LS
+                + "table.statTable tfoot .links a{" + LS
+                + "  display: inline-block;" + LS
+                + "  background: #1C6EA4;" + LS
+                + "  color: #FFFFFF;" + LS
+                + "  padding: 2px 8px;" + LS
+                + "  border-radius: 5px;" + LS
+                + "}" + LS
+                + ".statusWARN { background-color: #FFBB33; }" + LS
+                + ".statusOK { background-color: #D0E4F5; }" + LS
                 + "</style></head><body>";
         String footer = "</body></html>";
 
